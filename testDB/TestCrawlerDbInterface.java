@@ -20,10 +20,12 @@ import java.sql.Statement;
  */
 
 public class TestCrawlerDbInterface {
-    public Connection conn = null;
+    private static TestCrawlerDbInterface INSTANCE = null;
     private String dbName;
- 
-    public TestCrawlerDbInterface(String setDbName) {
+    public Connection conn = null;
+    
+    // protected to avoid instantiation from outside
+    protected TestCrawlerDbInterface(String setDbName) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             
@@ -40,6 +42,15 @@ public class TestCrawlerDbInterface {
             e.printStackTrace();
         }
     }
+
+    // implements singleton behavior
+    public static TestCrawlerDbInterface getInstance(String setDbName) {
+       if(INSTANCE == null) {
+          INSTANCE = new TestCrawlerDbInterface(setDbName);
+       }
+       return INSTANCE;
+    }
+
 
     /**
      * 
